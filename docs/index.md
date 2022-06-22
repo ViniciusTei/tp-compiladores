@@ -1,4 +1,4 @@
-# Documentação linguagem P
+# Linguagem P
 
 Aqui você encontra uma breve documentação para a linguagem P. Nela você poderá entender como escrever um programa em P.
 
