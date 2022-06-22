@@ -1,4 +1,4 @@
-mostrar("Ola mundo");
+pespcrepva("Ola mundo");
 
 numeral soma(numeral a, numeral b) {
   retorna a + b;

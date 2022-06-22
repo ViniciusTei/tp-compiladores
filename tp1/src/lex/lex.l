@@ -9,25 +9,38 @@ white_space [ \t\n]+
 letter [A-Za-z]
 digit [0-9]
 id {letter}({letter}|{digit})*
-function_call {letter}+\(.*\)\;
-function_def {letter}+{letter}+\(.*\)\{
 
 %%
-pnupmepral | //numeral pnupmepral
-pleptra | //letra pleptra
-penpquanpto | //enquanto penpquanpto
-preppipta | //repita preppipta
-objeto | //
-defina |
-se |
-pare |
-continue |
-vazio |
-retorne |
-entao |
-senao                     {printf("\nFoi encontrado uma palavra reservada. LEXEMA: %s", yytext);}
-{function_call}           {printf("\nFoi encontrado uma chamada de funcao. LEXEMA: %s", yytext);}
-{function_def}            {printf("\nFoi encontrado uma declaracao de funcao. LEXEMA: %s", yytext);}
+parpquipvo      |
+pcaprapcptepre  |
+pcapso          |
+pe              |
+penpquanpto     |
+penptao         |
+pespcoplha      |
+pespcrepva      |
+pfapca          |
+pfalpso         |
+pfunpcao        |
+pinpteipro      |
+pinpterprompa   |
+plepia          |
+plopgipco       |
+pmod            |
+pnapo           |
+pou             |
+pouptropcapso   |
+ppapra          |
+ppapspso        |
+ppaupsa         |
+prepal          |
+preppipta       |
+preptoprpne     |
+pse             |
+psepnao         |
+pveptor         |
+pverpdapdeipro            {printf("\nFoi encontrado uma palavra reservada. LEXEMA: %s", yytext);}
+{id}                      {printf("\nFoi encontrado um identificador. LEXEMA: %s", yytext);}
 {white_space}             {/*nao faz nada*/}
 . 
 %%
