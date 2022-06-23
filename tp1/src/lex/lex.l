@@ -9,6 +9,8 @@ white_space [ \t\n]+
 letter [A-Za-z]
 digit [0-9]
 id {letter}({letter}|{digit})*
+line_comment \/\/.*
+block_comment \/\*(({white_space}|{letter}|{digit}|.)*)\*\/
 
 %%
 parpquipvo      |
@@ -39,9 +41,14 @@ preptoprpne     |
 pse             |
 psepnao         |
 pveptor         |
-pverpdapdeipro            {printf("\nFoi encontrado uma palavra reservada. LEXEMA: %s", yytext);}
-{id}                      {printf("\nFoi encontrado um identificador. LEXEMA: %s", yytext);}
-{white_space}             {/*nao faz nada*/}
+pverpdapdeipro              {printf("\nFoi encontrado uma palavra reservada. LEXEMA: %s", yytext);}
+"+"|"-"|"*"|"/"|"mod"|"^"   {printf("\nFoi encontrado um operador aritmetico. LEXEMA %s", yytext);}
+"=="|"<"|">"|"<="|"=>"|"!=" {printf("\nFoi econtrado um operador relacional. LEXEMA %s", yytext);}
+"pou"|"pe"|"pnapo"          {printf("\nFoi encontrado um operador logico. LEXEMA: %s", yytext);}
+{id}                        {printf("\nFoi encontrado um identificador. LEXEMA: %s", yytext);}
+{line_comment}              {printf("\nFoi encontrado um comentario de linha. LEXEMA %s", yytext);}
+{block_comment}             {printf("\nFoi encontrado um comentario de bloco. LEXEMA %s", yytext);}
+{white_space}               {/*nao faz nada*/}
 . 
 %%
 

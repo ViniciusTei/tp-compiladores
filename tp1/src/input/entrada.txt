@@ -1,5 +1,8 @@
 pespcrepva("Ola mundo");
 
+/*
+ * Funcao de soma
+ */
 numeral soma(numeral a, numeral b) {
-  retorna a + b;
+  retorna a + b; // retorna a soma
 }
