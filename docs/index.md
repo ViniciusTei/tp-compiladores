@@ -6,13 +6,12 @@ Aqui você encontra uma breve documentação para a linguagem P. Nela você pode
 
 1. [Hello World](hello-world.md)
 2. [Tipos de dados](tipos-dados.md)
-3. [Operadores aritméticos](#paragraph2)
-4. [Operadores relacionais](#paragraph2)
-5. [Operadores lógicos](#paragraph2)
-6. [Operadores lógicos](#paragraph2)
-7. [Entrada e saida de dados](#paragraph2)
-8. [Estruturas de repetição](#paragraph2)
-9. [Estruturas condicionais](#paragraph2)
+3. [Operadores aritméticos](operadores-aritmeticos.md)
+4. [Operadores relacionais](operadores-relacionais.md)
+5. [Operadores lógicos](operadores-logicos.md)
+6. [Estruturas de repetição](repeticao.md)
+7. [Estruturas condicionais](condicionais.md)
+8. [Entrada e saida de dados](entrada-saida.md)
 
 ---
 
