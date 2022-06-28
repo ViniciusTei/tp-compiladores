@@ -16,3 +16,44 @@ Aqui você encontra uma breve documentação para a linguagem P. Nela você pode
 ---
 
 Essa linguagem foi criada para a disciplina de Compiladores da Universidade Federal de Viçosa.
+
+**🤝 Colaboradores**
+
+Agradecemos às seguintes pessoas que contribuíram para este projeto:
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/ViniciusTei">
+        <img src="https://github.com/ViniciusTei.png" width="64px;" alt="Foto do Vinicius no GitHub"/><br>
+        <sub>
+          <b>ViniciusTei</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/LTaka">
+        <img src="https://github.com/LTaka.png" width="64px;" alt="Foto do LTaka no GitHub"/><br>
+        <sub>
+          <b>LTaka</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/buMatheus">
+        <img src="https://github.com/buMatheus.png" width="64px;" alt="Foto do buMatheus no GitHub"/><br>
+        <sub>
+          <b>buMatheus</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/ArthurMarte">
+        <img src="https://github.com/ArthurMarte.png" width="64px;" alt="Foto do ArthurMarte no GitHub"/><br>
+        <sub>
+          <b>ArthurMarte</b>
+        </sub>
+      </a>
+    </td>
+  </tr>
+</table>
