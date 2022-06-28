@@ -41,7 +41,19 @@ preptoprpne     |
 pse             |
 psepnao         |
 pveptor         |
+pde         	|
+papte         	|
 pverpdapdeipro              {printf("\nFoi encontrado uma palavra reservada. LEXEMA: %s", yytext);}
+penpquanpto     |
+ppapra          |
+preppipta       |
+pde     		|
+papte              			{printf("\nFoi encontrado uma palavra de laço de repetição. LEXEMA: %s", yytext);}
+pse 	   |
+psepnao	   |
+penptao    |
+pespcoplha |
+pcapso     					{printf("\nFoi encontrado uma palavra condicional. LEXEMA: %s", yytext);}
 "+"|"-"|"*"|"/"|"mod"|"^"   {printf("\nFoi encontrado um operador aritmetico. LEXEMA %s", yytext);}
 "=="|"<"|">"|"<="|"=>"|"!=" {printf("\nFoi econtrado um operador relacional. LEXEMA %s", yytext);}
 "pou"|"pe"|"pnapo"          {printf("\nFoi encontrado um operador logico. LEXEMA: %s", yytext);}
