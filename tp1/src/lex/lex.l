@@ -11,7 +11,7 @@ digit [0-9]
 id {letter}({letter}|{digit})*
 line_comment \/\/.*
 block_comment \/\*(({white_space}|{letter}|{digit}|.)*)\*\/
-
+text ["]({letter}|{digit}|[ ])*["] 
 %%
 parpquipvo      |
 pcaprapcptepre  |
@@ -43,19 +43,21 @@ psepnao         |
 pveptor         |
 pde         	|
 papte         	|
-pverpdapdeipro              {printf("\nFoi encontrado uma palavra reservada. LEXEMA: %s", yytext);}
+pverpdapdeipro               {printf("\nFoi encontrado uma palavra reservada. LEXEMA: %s", yytext);}
 penpquanpto     |
 ppapra          |
 preppipta       |
 pde     		|
-papte              			{printf("\nFoi encontrado uma palavra de laço de repetição. LEXEMA: %s", yytext);}
+papte              			    {printf("\nFoi encontrado uma palavra de laço de repetição. LEXEMA: %s", yytext);}
 pse 	   |
 psepnao	   |
 penptao    |
 pespcoplha |
-pcapso     					{printf("\nFoi encontrado uma palavra condicional. LEXEMA: %s", yytext);}
+pcapso     					        {printf("\nFoi encontrado uma palavra condicional. LEXEMA: %s", yytext);}
 "+"|"-"|"*"|"/"|"mod"|"^"   {printf("\nFoi encontrado um operador aritmetico. LEXEMA %s", yytext);}
 "=="|"<"|">"|"<="|"=>"|"!=" {printf("\nFoi econtrado um operador relacional. LEXEMA %s", yytext);}
+"("|")"|"{"|"}"|";"         {printf("\nFoi econtrado um delimitador. LEXEMA %s", yytext);}
+{text}                      {printf("\nFoi econtrado um texto. LEXEMA %s", yytext);}
 "pou"|"pe"|"pnapo"          {printf("\nFoi encontrado um operador logico. LEXEMA: %s", yytext);}
 {id}                        {printf("\nFoi encontrado um identificador. LEXEMA: %s", yytext);}
 {line_comment}              {printf("\nFoi encontrado um comentario de linha. LEXEMA %s", yytext);}
