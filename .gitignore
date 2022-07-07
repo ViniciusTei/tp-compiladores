@@ -56,3 +56,6 @@ dkms.conf
 
 # flex
 *.yy.c
+
+# yacc
+y.*
