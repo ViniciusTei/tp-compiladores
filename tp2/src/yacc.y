@@ -4,7 +4,6 @@
     #include<stdlib.h>
     #include<ctype.h>
     #include"lex.yy.c"
-    
     void yyerror(const char *s);
     int yylex();
     int yywrap();
@@ -89,9 +88,10 @@ return: RETURN value ';'
 %%
 
 int main() {
+    
     yyparse();
 }
 
 void yyerror(const char* msg) {
-    fprintf(stderr, "%s\n", msg);
+   fprintf(stderr, "%s at line %d\n", msg, yylineno);
 }

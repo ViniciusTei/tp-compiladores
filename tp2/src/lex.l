@@ -48,7 +48,7 @@ unary "++"|"--"
 ["].*["]                    { return STR; }
 ['].[']                     { return CHARACTER; }
 
-%%
+%% 
 
 int yywrap() {
     return 1;
