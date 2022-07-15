@@ -1,6 +1,10 @@
 %{
-    #include "y.tab.h"
+
+    #include <stdio.h>
+    #include "lib.h"
+
     int countn=0;
+    int yylex(void);
 %}
 
 %option yylineno
@@ -21,7 +25,6 @@ unary "++"|"--"
 "for"	                    { return FOR; }
 "if"	                    { return IF; }
 "else"	                    { return ELSE; }
-^"#include"[ ]*<.+\.h>      { return INCLUDE; }
 "true"                      { return TRUE; }
 "false"                     { return FALSE; }
 [-]?{digit}+                { return NUMBER; }
@@ -50,6 +53,14 @@ unary "++"|"--"
 
 %% 
 
+int main(void) {
+	return begin();
+}
+
+void yyerror(const char *str) {
+	handleError(str);
+}
+
 int yywrap() {
-    return 1;
+	return 1;
 }
