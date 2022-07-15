@@ -6,6 +6,8 @@ Nele vamos reconhecer erros lexicos e sintaticos. E vamos comecar a definir as p
 
 https://medium.com/codex/building-a-c-compiler-using-lex-and-yacc-446262056aaa
 
+https://github.dev/gfviegas/xd-compilador
+
 ## Yacc
 
 Yacc (Yet Another Compiler Compiler) eh uma ferramenta usada para criar uma arvore de derivacao. Ele pega os tokens do analisador lexico (Lex) e faz uma analise semantica. Yacc traduz uma GLC em uma implementacao C.
