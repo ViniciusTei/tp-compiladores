@@ -107,6 +107,7 @@ return: RETURN { add('K'); } value ';'
 
 int main() {
   yyparse();
+	yylex(); 
   printf("\n\n");
 	printf("PHASE 1: LEXICAL ANALYSIS \n\n");
 	printf("\nSYMBOL   DATATYPE   TYPE   LINE NUMBER \n");

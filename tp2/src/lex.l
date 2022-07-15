@@ -1,8 +1,10 @@
 %{
     #include "y.tab.h"
     int countn=0;
+    int line_number = 1; 
 %}
 
+line .*\n  
 %option yylineno
 
 alpha [a-zA-Z]
@@ -47,9 +49,9 @@ unary "++"|"--"
 .	                    { return *yytext; }
 ["].*["]                    { return STR; }
 ['].[']                     { return CHARACTER; }
-
+{line} { printf("%10d %s", line_number++, yytext); } 
 %% 
 
 int yywrap() {
-    return 1;
+    /* return 1; */
 }
