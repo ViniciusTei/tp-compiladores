@@ -13,3 +13,13 @@ res = a + b; // mostra 3 na tela
 pcaprapcptepre c = 'c';
 res = a + c; // 
 ```
+
+## Multiplicacao e Divisao
+
+Use os operadores * e / para fazer essas operacoes, assim como nas linguagens mais comuns.
+
+```
+pinpteipro a = 1, b = 2, res;
+res = a * b; // mostra 2 na tela
+
+```
