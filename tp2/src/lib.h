@@ -7,6 +7,7 @@
 // Variáveis do YACC/LEX
 extern int yylineno, yychar, yydebug;
 extern char* yytext;
+extern FILE* yyin;
 
 // Estado do compilador
 // int hasError = 0; 

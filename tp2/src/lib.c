@@ -3,7 +3,7 @@
 int begin(void) {
   hasError = 0;
   initializeSymbolTable(&st);
-  
+  printf("Arquivo de entrada\n");
   yyparse();
 
   printSymbolTable(st);
