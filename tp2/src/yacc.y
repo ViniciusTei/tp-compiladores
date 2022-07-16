@@ -1,54 +1,49 @@
 %{
     #include "./src/lib.h"
 
-    void insert_type();
+    void defineDataType();
 
-    char type[18];
+    char dataType[18];
 %}
 
-%token VOID CHARACTER PRINTFF SCANFF INT FLOAT CHAR FOR IF ELSE TRUE FALSE NUMBER FLOAT_NUM ID LE GE EQ NE GT LT AND OR STR ADD MULTIPLY DIVIDE SUBTRACT UNARY INCLUDE RETURN 
+%token VOID CHARACTER PRINTFF SCANFF INT FLOAT CHAR FOR IF ELSE TRUE FALSE NUMBER FLOAT_NUM ID LE GE EQ NE GT LT AND OR STR ADD MULTIPLY DIVIDE SUBTRACT UNARY RETURN WHILE
 
 %%
 
-program: headers main '(' ')' '{' body return '}'
+begin: main '(' ')' '{' body return '}'
 ;
 
-headers: headers headers
-| INCLUDE { add(&st, 'H', yylineno, type, yytext); }
+main: datatype ID { addToSymbolTable(&st, FUNCT, yylineno, dataType, yytext); }
 ;
 
-main: datatype ID { add(&st, 'F', yylineno, type, yytext); }
+datatype: INT { defineDataType(); }
+| FLOAT { defineDataType(); }
+| CHAR { defineDataType(); }
+| VOID { defineDataType(); }
 ;
 
-datatype: INT { insert_type(); }
-| FLOAT { insert_type(); }
-| CHAR { insert_type(); }
-| VOID { insert_type(); }
-;
-
-body: FOR { add(&st, 'K', yylineno, type, yytext); } '(' statement ';' condition ';' statement ')' '{' body '}'
-| IF { add(&st, 'K', yylineno, type, yytext); } '(' condition ')' '{' body '}' else
+body: FOR { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '(' statement ';' condition ';' statement ')' '{' body '}'
+| IF { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '(' condition ')' '{' body '}' else
 | statement ';'
 | body body 
-| PRINTFF { add(&st, 'K', yylineno, type, yytext); } '(' STR ')' ';'
-| SCANFF { add(&st, 'K', yylineno, type, yytext); } '(' STR ',' '&' ID ')' ';'
+| PRINTFF { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '(' STR ')' ';'
+| SCANFF { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '(' STR ',' '&' ID ')' ';'
+| WHILE { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '(' condition ')' '{' body '}'
 ;
 
-else: ELSE { add(&st, 'K', yylineno, type, yytext); } '{' body '}'
+else: ELSE { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '{' body '}'
 |
 ;
 
 condition: value relop value 
-| TRUE { add(&st, 'K', yylineno, type, yytext); }
-| FALSE { add(&st, 'K', yylineno, type, yytext); }
+| TRUE { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); }
+| FALSE { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); }
 |
 ;
 
-statement: datatype ID { add(&st, 'V', yylineno, type, yytext); } init
+statement: datatype ID { addToSymbolTable(&st, IDTYPE, yylineno, dataType, yytext); } init
 | ID '=' expression
 | ID relop expression
-| ID UNARY
-| UNARY ID
 ;
 
 init: '=' value
@@ -59,33 +54,34 @@ expression: expression arithmetic expression
 | value
 ;
 
-arithmetic: ADD 
-| SUBTRACT 
-| MULTIPLY
-| DIVIDE
+arithmetic: ADD { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
+| SUBTRACT { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
+| MULTIPLY { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
+| DIVIDE { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
 ;
 
-relop: LT
-| GT
-| LE
-| GE
-| EQ
-| NE
+relop: LT { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
+| GT { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
+| LE { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
+| GE { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
+| EQ { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
+| NE { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
 ;
 
-value: NUMBER { add(&st, 'C', yylineno, type, yytext); }
-| FLOAT_NUM { add(&st, 'C', yylineno, type, yytext); }
-| CHARACTER { add(&st, 'C', yylineno, type, yytext); }
+value: NUMBER { addToSymbolTable(&st, CONSTANT, yylineno, dataType, yytext); }
+| FLOAT_NUM { addToSymbolTable(&st, CONSTANT, yylineno, dataType, yytext); }
+| CHARACTER { addToSymbolTable(&st, CONSTANT, yylineno, dataType, yytext); }
 | ID
 ;
 
-return: RETURN { add(&st, 'K', yylineno, type, yytext); } value ';'
+return: RETURN { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } value ';'
 |
 ;
 
 %%
-void insert_type() {
-	strcpy(type, yytext);
+
+void defineDataType() {
+	strcpy(dataType, yytext);
 }
 
 int main () {

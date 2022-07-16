@@ -12,11 +12,15 @@ pinpteipro main() {
             pespcrepva("Ola condicoes!");
             a = x * 3 + 100;
         }
-        senao {
+        psepnao {
             x = a * 3 + 100;
         }
     }
-    senao {
+    psepnao {
         x = a * 3 + 100;
+    }
+
+    penpquanpto(x>a) {
+        pespcrepva("Infinito!");
     }
 }

@@ -3,7 +3,7 @@ pinpteipro main() {
     pinpteipro x=1;
     prepal f;
     pinpteipro a=3;
-    pinpteipro x
+    pinpteipro x;
     a = x * 3 + 5;
     pse(x>a) {
         pespcrepva("Ola linguagem P!");
@@ -16,7 +16,7 @@ pinpteipro main() {
             x = a * 3 + 100;
         }
     }
-    senao {
+    psepnao {
         x = a * 3 + 100;
     }
 }
