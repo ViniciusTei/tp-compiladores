@@ -1,5 +1,5 @@
 %{
-    #include "./src/tabela.h"
+    #include "./src/lib.h"
 
     void insert_type();
 
@@ -14,10 +14,10 @@ program: headers main '(' ')' '{' body return '}'
 ;
 
 headers: headers headers
-| INCLUDE { add(st, 'H', yylineno, type, yytext); }
+| INCLUDE { add(&st, 'H', yylineno, type, yytext); }
 ;
 
-main: datatype ID { add(st, 'F', yylineno, type, yytext); }
+main: datatype ID { add(&st, 'F', yylineno, type, yytext); }
 ;
 
 datatype: INT { insert_type(); }
@@ -26,25 +26,25 @@ datatype: INT { insert_type(); }
 | VOID { insert_type(); }
 ;
 
-body: FOR { add(st, 'K', yylineno, type, yytext); } '(' statement ';' condition ';' statement ')' '{' body '}'
-| IF { add(st, 'K', yylineno, type, yytext); } '(' condition ')' '{' body '}' else
+body: FOR { add(&st, 'K', yylineno, type, yytext); } '(' statement ';' condition ';' statement ')' '{' body '}'
+| IF { add(&st, 'K', yylineno, type, yytext); } '(' condition ')' '{' body '}' else
 | statement ';'
 | body body 
-| PRINTFF { add(st, 'K', yylineno, type, yytext); } '(' STR ')' ';'
-| SCANFF { add(st, 'K', yylineno, type, yytext); } '(' STR ',' '&' ID ')' ';'
+| PRINTFF { add(&st, 'K', yylineno, type, yytext); } '(' STR ')' ';'
+| SCANFF { add(&st, 'K', yylineno, type, yytext); } '(' STR ',' '&' ID ')' ';'
 ;
 
-else: ELSE { add(st, 'K', yylineno, type, yytext); } '{' body '}'
+else: ELSE { add(&st, 'K', yylineno, type, yytext); } '{' body '}'
 |
 ;
 
 condition: value relop value 
-| TRUE { add(st, 'K', yylineno, type, yytext); }
-| FALSE { add(st, 'K', yylineno, type, yytext); }
+| TRUE { add(&st, 'K', yylineno, type, yytext); }
+| FALSE { add(&st, 'K', yylineno, type, yytext); }
 |
 ;
 
-statement: datatype ID { add(st, 'V', yylineno, type, yytext); } init
+statement: datatype ID { add(&st, 'V', yylineno, type, yytext); } init
 | ID '=' expression
 | ID relop expression
 | ID UNARY
@@ -73,17 +73,25 @@ relop: LT
 | NE
 ;
 
-value: NUMBER { add(st, 'C', yylineno, type, yytext); }
-| FLOAT_NUM { add(st, 'C', yylineno, type, yytext); }
-| CHARACTER { add(st, 'C', yylineno, type, yytext); }
+value: NUMBER { add(&st, 'C', yylineno, type, yytext); }
+| FLOAT_NUM { add(&st, 'C', yylineno, type, yytext); }
+| CHARACTER { add(&st, 'C', yylineno, type, yytext); }
 | ID
 ;
 
-return: RETURN { add(st, 'K', yylineno, type); } value ';'
+return: RETURN { add(&st, 'K', yylineno, type, yytext); } value ';'
 |
 ;
 
 %%
 void insert_type() {
 	strcpy(type, yytext);
+}
+
+int main () {
+    return begin();
+}
+
+void yyerror(const char* msg) {
+  handleError(msg);
 }

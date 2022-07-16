@@ -3,6 +3,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#define ST_MAX_TAM 1024
 
 typedef enum MetaType {
 	UNKNOWN = -1,
@@ -24,11 +25,12 @@ typedef struct SymbolTableData{
 } SymbolTableData;
 
 typedef struct SymbolTable {
-  SymbolTableData *table;
+  SymbolTableData table[ST_MAX_TAM];
   int first, last;
 } SymbolTable;
 
 void initializeSymbolTable(SymbolTable *st);
 void add(SymbolTable *table, char c, int lineNum, char *type, char *yytext);
+void printSymbolTable(SymbolTable st);
 
 #endif

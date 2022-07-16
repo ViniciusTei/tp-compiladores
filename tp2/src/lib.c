@@ -1,16 +1,18 @@
 #include "lib.h"
 
 int begin(void) {
-  initializeSymbolTable(st);
+  printf("Starting...\n");
+  hasError = 0;
+  initializeSymbolTable(&st);
   
   yyparse();
 
-  if (hasSyntaticError) {
-    printf("\n Programa sintaticamente incorreto! Encerrando compilador!\n");
-    return 0;
-  }
+  printSymbolTable(st);
+  
+  hasError
+    ? printf("\n Programa incorreto! Encerrando compilador!\n")
+    : printf("\n Programa correto! Encerrando compilador!\n");
 
-  printf("\n Programa correto! Encerrando compilador!\n");
   return 0;
 }
 
@@ -19,5 +21,5 @@ void handleError(const char *str) {
 	printf("Erro: %s na linha %d", str, yylineno);
 	printf("\n\n");
 
-	hasSyntaticError = 1;
+  hasError = 1;
 }

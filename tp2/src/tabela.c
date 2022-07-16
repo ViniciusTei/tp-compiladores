@@ -3,7 +3,7 @@
 void initializeSymbolTable(SymbolTable *st) {
   st->first = 0;
   st->last = st->first;
-  st->table = malloc(sizeof(SymbolTable));
+
 }
 
 // verifica se o simbolo encontrado ja esta na tabela
@@ -53,6 +53,16 @@ void add(SymbolTable *table, char c, int lineNum, char *type, char *yytext) {
 			index++;
 		}
 
-    table->table = realloc(table->table, index * sizeof(SymbolTable));
+		table->last = index;
+
+    // table->table = realloc(table->table, index * sizeof(SymbolTable));
+	}
+}
+
+void printSymbolTable(SymbolTable st) {
+	printf("\n\n\nTABELA DE SIMBOLOS\n");
+	printf("SIMBOLO\t\t\t\tTIPO\t\t\tLINHA\n");
+	for(int i = 0; i < st.last; i++) {
+		printf("%s\t\t\t\t%s\t\t\t%d\n", st.table[i].token.lexem, st.table[i].type, st.table[i].line);
 	}
 }

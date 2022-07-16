@@ -9,8 +9,9 @@ extern int yylineno, yychar, yydebug;
 extern char* yytext;
 
 // Estado do compilador
-int hasSyntaticError = 0; 
-SymbolTable *st;
+// int hasError = 0; 
+SymbolTable st;
+int hasError;
 
 /**
  * Funcao principal que ira rodar os principais recursos
