@@ -11,19 +11,19 @@ unary "++"|"--"
 
 %%
 
-"printf"                    { return PRINTFF; }
-"scanf"                     { return SCANFF; }
-"int"                       { return INT; }
-"float"                     { return FLOAT; }
-"char"                      { return CHAR; }
-"void"                      { return VOID; }
-"return"                    { return RETURN; }
-"for"	                    { return FOR; }
-"if"	                    { return IF; }
-"else"	                    { return ELSE; }
+"pespcrepva"                    { return PRINTFF; }
+"plepia"                     { return SCANFF; }
+"pinpteipro"                       { return INT; }
+"prepal"                     { return FLOAT; }
+"pcaprapcptepre"                      { return CHAR; }
+"pvapzipo"                      { return VOID; }
+"preptoprpne"                    { return RETURN; }
+"preppipta"	                    { return FOR; }
+"pse"	                    { return IF; }
+"psepnao"	                    { return ELSE; }
 ^"#include"[ ]*<.+\.h>      { return INCLUDE; }
-"true"                      { return TRUE; }
-"false"                     { return FALSE; }
+"pverpdapdeipro"                      { return TRUE; }
+"pfalpso"                     { return FALSE; }
 [-]?{digit}+                { return NUMBER; }
 [-]?{digit}+\.{digit}{1,6}  { return FLOAT_NUM; }
 {alpha}({alpha}|{digit})*   { return ID; }
