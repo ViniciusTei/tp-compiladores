@@ -6,15 +6,11 @@
     char type[18];
 %}
 
-%token VOID CHARACTER PRINTFF SCANFF INT FLOAT CHAR FOR IF ELSE TRUE FALSE NUMBER FLOAT_NUM ID LE GE EQ NE GT LT AND OR STR ADD MULTIPLY DIVIDE SUBTRACT UNARY INCLUDE RETURN 
+%token VOID CHARACTER PRINTFF SCANFF INT FLOAT CHAR FOR IF ELSE TRUE FALSE NUMBER FLOAT_NUM ID LE GE EQ NE GT LT AND OR STR ADD MULTIPLY DIVIDE SUBTRACT UNARY RETURN 
 
 %%
 
-program: headers main '(' ')' '{' body return '}'
-;
-
-headers: headers headers
-| INCLUDE { add(&st, 'H', yylineno, type, yytext); }
+program: main '(' ')' '{' body return '}'
 ;
 
 main: datatype ID { add(&st, 'F', yylineno, type, yytext); }

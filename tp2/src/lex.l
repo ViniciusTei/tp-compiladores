@@ -22,7 +22,6 @@ unary "++"|"--"
 "preppipta"	                    { return FOR; }
 "pse"	                    { return IF; }
 "psepnao"	                    { return ELSE; }
-^"#include"[ ]*<.+\.h>      { return INCLUDE; }
 "pverpdapdeipro"                      { return TRUE; }
 "pfalpso"                     { return FALSE; }
 [-]?{digit}+                { return NUMBER; }
