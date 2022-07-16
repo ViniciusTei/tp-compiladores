@@ -8,7 +8,6 @@
 
 alpha [a-zA-Z]
 digit [0-9]
-unary "++"|"--"
 
 %%
 
@@ -24,10 +23,10 @@ unary "++"|"--"
 "psepnao"	                    { return ELSE; }
 "pverpdapdeipro"                      { return TRUE; }
 "pfalpso"                     { return FALSE; }
+"penpquanpto"                     { return WHILE; }
 [-]?{digit}+                { return NUMBER; }
 [-]?{digit}+\.{digit}{1,6}  { return FLOAT_NUM; }
 {alpha}({alpha}|{digit})*   { return ID; }
-{unary}                     { return UNARY; }
 "<="                        { return LE; }
 ">="                        { return GE; }
 "=="                        { return EQ; }

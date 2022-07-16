@@ -1,7 +1,6 @@
 #include "lib.h"
 
 int begin(void) {
-  printf("Starting...\n");
   hasError = 0;
   initializeSymbolTable(&st);
   

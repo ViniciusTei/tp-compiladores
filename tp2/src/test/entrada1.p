@@ -19,4 +19,8 @@ pinpteipro main() {
     psepnao {
         x = a * 3 + 100;
     }
+
+    penpquanpto(x>a) {
+        pespcrepva("Infinito!");
+    }
 }

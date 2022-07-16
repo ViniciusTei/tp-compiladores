@@ -11,7 +11,8 @@ typedef enum MetaType {
 	CONSTANT,
   OPERATOR,
   KEYWORD,
-} MetaKind;
+  FUNCT,
+} MetaType;
 
 typedef struct Token {
   char *lexem;
@@ -20,7 +21,8 @@ typedef struct Token {
 
 typedef struct SymbolTableData{
   Token token;
-  char* type;
+  MetaType type;
+  char *data_type;
   int line;
 } SymbolTableData;
 
@@ -30,7 +32,7 @@ typedef struct SymbolTable {
 } SymbolTable;
 
 void initializeSymbolTable(SymbolTable *st);
-void add(SymbolTable *table, char c, int lineNum, char *type, char *yytext);
+void addToSymbolTable(SymbolTable *table, MetaType c, int lineNum, char *dataType, char *yytext);
 void printSymbolTable(SymbolTable st);
 
 #endif

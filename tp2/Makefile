@@ -16,3 +16,4 @@ lex:
 	$(CC) lex.yy.c y.tab.c ./src/tabela.c ./src/lib.c
 	./$(TARGET) < ./src/test/entrada1.p
 	./$(TARGET) < ./src/test/entrada2.p
+	./$(TARGET) < ./src/test/entrada3.p

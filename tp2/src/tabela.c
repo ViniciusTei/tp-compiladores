@@ -18,51 +18,72 @@ int verifyAlreadyIsInTable(SymbolTable *table, char *id) {
 	return 0;
 }
 
-void add(SymbolTable *table, char c, int lineNum, char *type, char *yytext) {
-  char q=verifyAlreadyIsInTable(table, yytext);
-  if(!q) {
+void enterTableData(SymbolTable *table, int index, MetaType c, int lineNum, char *dataType, char *yytext) {
+	table->table[index].token.lexem=strdup(yytext);
+	table->table[index].line=lineNum;
+	table->table[index].type=c;
+	table->table[index].data_type==strdup(dataType);
+}
+
+void addToSymbolTable(SymbolTable *table, MetaType c, int lineNum, char *dataType, char *yytext) {
+  if(!verifyAlreadyIsInTable(table, yytext)) {
     int index = table->last;
-    if(c == 'H') {
-			table->table[index].token.lexem=strdup(yytext);
-			table->table[index].line=lineNum;
-			table->table[index].type=strdup("Header");
-			index++;
-		}
-		else if(c == 'K') {
-			table->table[index].token.lexem=strdup(yytext);
-			table->table[index].line=lineNum;
-			table->table[index].type=strdup("Keyword\t");
-			index++;
-		}
-		else if(c == 'V') {
-			table->table[index].token.lexem=strdup(yytext);
-			table->table[index].line=lineNum;
-			table->table[index].type=strdup("Variable");
-			index++;
-		}
-		else if(c == 'C') {
-			table->table[index].token.lexem=strdup(yytext);
-			table->table[index].line=lineNum;
-			table->table[index].type=strdup("Constant");
-			index++;
-		}
-		else if(c == 'F') {
-			table->table[index].token.lexem=strdup(yytext);
-			table->table[index].line=lineNum;
-			table->table[index].type=strdup("Function");
-			index++;
+		switch (c)
+		{
+		case KEYWORD:
+			enterTableData(table, index, c, lineNum, dataType, yytext);
+			break;
+		case IDTYPE:
+			enterTableData(table, index, c, lineNum, dataType, yytext);
+			break;
+		case CONSTANT:
+			enterTableData(table, index, c, lineNum, dataType, yytext);
+			break;
+		case FUNCT:
+			enterTableData(table, index, c, lineNum, dataType, yytext);
+			break;
+		case OPERATOR:
+			enterTableData(table, index, c, lineNum, dataType, yytext);
+			break;
+		default:
+			printf("Not mapped\n");
+			break;
 		}
 
+		index++;
 		table->last = index;
-
-    // table->table = realloc(table->table, index * sizeof(SymbolTable));
 	}
+}
+
+char *handleShowMetaType(MetaType t) {
+	switch (t)
+		{
+		case KEYWORD:
+			return "Palavra chave";
+			break;
+		case IDTYPE:
+			return "Variavel";
+			break;
+		case CONSTANT:
+			return "Contante";
+			break;
+		case FUNCT:
+			return "Funcao";
+			break;
+		case OPERATOR:
+			return "Operador";
+			break;
+		default:
+			return "";
+			break;
+		}
 }
 
 void printSymbolTable(SymbolTable st) {
 	printf("\n\n\nTABELA DE SIMBOLOS\n");
 	printf("SIMBOLO\t\t\t\tTIPO\t\t\tLINHA\n");
 	for(int i = 0; i < st.last; i++) {
-		printf("%s\t\t\t\t%s\t\t\t%d\n", st.table[i].token.lexem, st.table[i].type, st.table[i].line);
+		printf("%s\t\t\t\t%s\t\t\t%d\n", st.table[i].token.lexem, handleShowMetaType(st.table[i].type), st.table[i].line);
 	}
 }
+
