@@ -1,6 +1,7 @@
 %{
     #include "y.tab.h"
     int countn=0;
+
 %}
 
 %option yylineno
@@ -50,6 +51,7 @@ unary "++"|"--"
 
 %% 
 
+
 int yywrap() {
-    return 1;
+	return 1;
 }
