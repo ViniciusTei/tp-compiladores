@@ -3,8 +3,7 @@
     int countn=0;
     int line_number = 1; 
 %}
-
-line .*\n  
+ 
 %option yylineno
 alpha [a-zA-Z]
 digit [0-9]
@@ -46,7 +45,6 @@ digit [0-9]
 .	                    { printf("%s", yytext);return *yytext; }
 ["].*["]                    { printf("%s", yytext);return STR; }
 ['].[']                     { printf("%s", yytext);return CHARACTER; }
-{line} { printf("%10d %s", line_number++, yytext); } 
 %% 
 
 int yywrap() {
