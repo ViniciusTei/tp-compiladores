@@ -83,3 +83,4 @@ repita, retorne, se, senao, vetor, verdadeiro
 | verdadeiro  | pverpdapdeipro  |
 | de          | pde             |
 | ate         | papte           |
+|vazio        | pvapzipo        |

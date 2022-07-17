@@ -13,6 +13,18 @@ Aqui você encontra uma breve documentação para a linguagem P. Nela você pode
 7. [Estruturas condicionais](condicionais.md)
 8. [Entrada e saida de dados](entrada-saida.md)
 
+## Sobre o compilador
+
+Esse compilador foi construindo usando as ferramentas [Lex e Yacc](http://dinosaur.compilertools.net/). Essas ferramentas auxiliam no processo de consstrucao de um compilador, fazendo o "trabalho duro"  para ler o programa fonte, entender sua estrutura e processa-la para gerar um codigo intermediario.
+
+### Lex
+
+LEX é uma ferramenta usada para gerar analisadores léxicos. Você passa como entrada um grupo de expressões regulares que fazem ações, para gerar um scanner em formato de código em C.
+
+### Yacc
+
+YACC (Yet Another Compiler Compiler) é uma ferramenta para gerar um conversor de código para tokens. Ele trabalha em conjunto com o arquivo LEX, para traduzir GLCs (Gramáticas Livres do Contexto) em implementações C. Esse programa em C gera um parser.
+
 ---
 
 Essa linguagem foi criada para a disciplina de Compiladores da Universidade Federal de Viçosa.

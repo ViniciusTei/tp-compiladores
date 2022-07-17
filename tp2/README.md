@@ -22,8 +22,8 @@ Ao se usar o executável de seu compilador para a sua linguagem, deverá ser imp
 
 ### TO-DO
 
-- [ ] Implementar as gramaticas para todos os comandos definidos pela linguagem
-- [ ] Imprimir o programa fonte com as linha numeradas
-- [ ] Imprimir o conteudo da tabela de simbolos
-- [ ] Imprimir mensagem de sucesso
-- [ ] Imprimir mensagem de erro, deve mostrar o erro e a linha onde ocorreu o erro.  
+- [x] Implementar as gramaticas para todos os comandos definidos pela linguagem
+- [x] Imprimir o programa fonte com as linha numeradas
+- [x] Imprimir o conteudo da tabela de simbolos
+- [x] Imprimir mensagem de sucesso
+- [x] Imprimir mensagem de erro, deve mostrar o erro e a linha onde ocorreu o erro.  
