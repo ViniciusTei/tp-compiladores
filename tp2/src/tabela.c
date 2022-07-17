@@ -65,7 +65,7 @@ char *handleShowMetaType(MetaType t) {
 			return "Variavel";
 			break;
 		case CONSTANT:
-			return "Contante";
+			return "Constante";
 			break;
 		case FUNCT:
 			return "Funcao";
