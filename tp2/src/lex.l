@@ -6,8 +6,6 @@
 
 line .*\n  
 %option yylineno
-
-line .*\n
 alpha [a-zA-Z]
 digit [0-9]
 
@@ -48,9 +46,8 @@ digit [0-9]
 .	                    { printf("%s", yytext);return *yytext; }
 ["].*["]                    { printf("%s", yytext);return STR; }
 ['].[']                     { printf("%s", yytext);return CHARACTER; }
-
+{line} { printf("%10d %s", line_number++, yytext); } 
 %% 
-
 
 int yywrap() {
     /* return 1; */
