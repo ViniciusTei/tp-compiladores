@@ -1,9 +1,10 @@
 %{
     #include "y.tab.h"
     int countn=0;
-
+    int line_number = 1; 
 %}
 
+line .*\n  
 %option yylineno
 
 line .*\n
@@ -52,5 +53,5 @@ digit [0-9]
 
 
 int yywrap() {
-	return 1;
+    /* return 1; */
 }

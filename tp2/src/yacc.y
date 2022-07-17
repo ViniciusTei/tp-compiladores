@@ -80,6 +80,23 @@ return: RETURN { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } v
 
 %%
 
+int main() {
+  yyparse();
+	yylex(); 
+  printf("\n\n");
+	printf("PHASE 1: LEXICAL ANALYSIS \n\n");
+	printf("\nSYMBOL   DATATYPE   TYPE   LINE NUMBER \n");
+	printf("_______________________________________\n\n");
+	int i=0;
+	for(i=0; i<count; i++) {
+		printf("%s\t%s\t%s\t%d\t\n", symbol_table[i].id_name, symbol_table[i].data_type, symbol_table[i].type, symbol_table[i].line_no);
+	}
+	for(i=0;i<count;i++) {
+		free(symbol_table[i].id_name);
+		free(symbol_table[i].type);
+	}
+	printf("\n\n");
+}
 void defineDataType() {
 	strcpy(dataType, yytext);
 }
