@@ -19,10 +19,10 @@ int verifyAlreadyIsInTable(SymbolTable *table, char *id) {
 }
 
 void enterTableData(SymbolTable *table, int index, MetaType c, int lineNum, char *dataType, char *yytext) {
-	table->table[index].token.lexem=strdup(yytext);
-	table->table[index].line=lineNum;
-	table->table[index].type=c;
-	table->table[index].data_type==strdup(dataType);
+	table->table[index].token.lexem = strdup(yytext);
+	table->table[index].line = lineNum;
+	table->table[index].type = c;
+	table->table[index].data_type = strdup(dataType);
 }
 
 void addToSymbolTable(SymbolTable *table, MetaType c, int lineNum, char *dataType, char *yytext) {
@@ -81,9 +81,9 @@ char *handleShowMetaType(MetaType t) {
 
 void printSymbolTable(SymbolTable st) {
 	printf("\n\n\nTABELA DE SIMBOLOS\n");
-	printf("SIMBOLO\t\t\t\tTIPO\t\t\tLINHA\n");
+	printf("SIMBOLO\t\t\t\tTIPO\t\t\tTIPO DE DADO\t\t\tLINHA\n");
 	for(int i = 0; i < st.last; i++) {
-		printf("%s\t\t\t\t%s\t\t\t%d\n", st.table[i].token.lexem, handleShowMetaType(st.table[i].type), st.table[i].line);
+		printf("%s\t\t\t\t%s\t\t\t%s\t\t\t%d\n", st.table[i].token.lexem, handleShowMetaType(st.table[i].type), st.table[i].data_type, st.table[i].line);
 	}
 }
 
