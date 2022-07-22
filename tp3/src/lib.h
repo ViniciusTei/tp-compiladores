@@ -3,6 +3,7 @@
 
 #include "../y.tab.h"
 #include "tabela.h"
+#include "btree.h"
 
 // Variáveis do YACC/LEX
 extern int yylineno, yychar, yydebug;
@@ -13,6 +14,12 @@ extern FILE* yyin;
 // int hasError = 0; 
 SymbolTable st;
 int hasError;
+TipoApontador head;
+
+struct lexval {
+   char name[100];
+   TipoApontador node;
+} lexval;
 
 /**
  * Funcao principal que ira rodar os principais recursos

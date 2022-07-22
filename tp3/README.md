@@ -13,5 +13,6 @@ Para implementar o codigo intermediario vamos usar a implementacao de tres ender
 
 ## Implementacao
 
+ - [ ] arvore sintaxe (b-tree)
  - [ ] analise semantica
  - [ ] geracao de codigo intermediario
