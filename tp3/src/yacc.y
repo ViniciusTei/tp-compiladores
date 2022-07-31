@@ -1,12 +1,20 @@
 %{
     #include "./src/lib.h"
+    #include "y.tab.h"
     void defineDataType();
     char dataType[18];
 %}
 
-%token VOID CHARACTER PRINTFF SCANFF INT FLOAT CHAR FOR IF ELSE TRUE FALSE NUMBER FLOAT_NUM ID LE GE EQ NE GT LT AND OR STR ADD MULTIPLY DIVIDE SUBTRACT UNARY RETURN WHILE
+%union {
+  struct lexval {
+   char name[100];
+   TipoApontador node;
+  } lexval;
+}
 
-%type <lexval> main body return datatype expression statement init value arithmetic relop begin
+%token <lexval> VOID CHARACTER PRINTFF SCANFF INT FLOAT CHAR FOR IF ELSE TRUE FALSE NUMBER FLOAT_NUM ID LE GE EQ NE GT LT AND OR STR ADD MULTIPLY DIVIDE SUBTRACT UNARY RETURN WHILE
+
+%type <lexval> main body return datatype expression statement init value arithmetic relop begin condition else
 
 %%
 
@@ -32,8 +40,8 @@ body: FOR { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '(' st
   $$.node = Insere($1.name, temp2, $11.node);
 }
 | IF { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '(' condition ')' '{' body '}' else {
-  TipoApontador nodeIf = Insere($1.name, $4.node, $8.node);
-  $$.node = Insere("if-else", nodeIf, $11.node);
+  TipoApontador nodeIf = Insere($1.name, $4.node, $7.node);
+  $$.node = Insere("if-else", nodeIf, $9.node);
 }
 | statement ';' {
   $$.node = $1.node;
@@ -48,7 +56,7 @@ body: FOR { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '(' st
   $$.node = Insere("scanf", NULL, NULL);
 }
 | WHILE { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '(' condition ')' '{' body '}' {
-  $$.node = Insere($1.name, $4.node, $6.node);
+  $$.node = Insere($1.name, $4.node, $7.node);
 }
 ;
 
@@ -110,7 +118,7 @@ value: NUMBER { addToSymbolTable(&st, CONSTANT, yylineno, dataType, yytext); }
 
 return: RETURN { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } value ';' {
   $1.node = Insere("return", NULL, NULL);
-  $$.NODE = Insere("RETURN", $1.node, $3.node);
+  $$.node = Insere("RETURN", $1.node, $3.node);
 }
 | { $$.node = NULL; }
 ;

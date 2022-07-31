@@ -1,4 +1,5 @@
 %{
+    #include "./src/lib.h"
     #include "y.tab.h"
     int countn=0;
     int line_number = 1; 

@@ -7,6 +7,9 @@ int begin(void) {
   yyparse();
 
   printSymbolTable(st);
+
+  printf("Analise sintatica\n\n");
+  printBTree(head);
   
   hasError
     ? printf("\n Programa incorreto! Encerrando compilador!\n")

@@ -7,12 +7,11 @@
 #define btree
 #include <stdlib.h>
 #include <stdio.h>
-#include <limits.h>
-#include <sys/time.h>
+#include <string.h>
 #define MAX  10
 
 typedef struct TipoRegistro {
-  void *Chave;
+  char *Chave;
 } TipoRegistro;
 typedef struct TipoNo * TipoApontador;
 typedef struct TipoNo {
@@ -20,7 +19,8 @@ typedef struct TipoNo {
   TipoApontador Esq, Dir;
 } TipoNo;
 
-void inicializaBTree(TipoApontador *tree);
-TipoApontador Insere(char *token, TipoApontador *left, TipoApontador *right);
+void inicializaBTree(TipoApontador tree);
+TipoApontador Insere(char *token, TipoApontador left, TipoApontador right);
+void printBTree(TipoApontador tree);
 
 #endif

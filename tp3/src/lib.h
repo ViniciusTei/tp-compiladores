@@ -1,7 +1,6 @@
 #ifndef lib
 #define lib
 
-#include "../y.tab.h"
 #include "tabela.h"
 #include "btree.h"
 
@@ -11,15 +10,9 @@ extern char* yytext;
 extern FILE* yyin;
 
 // Estado do compilador
-// int hasError = 0; 
 SymbolTable st;
 int hasError;
 TipoApontador head;
-
-struct lexval {
-   char name[100];
-   TipoApontador node;
-} lexval;
 
 /**
  * Funcao principal que ira rodar os principais recursos
