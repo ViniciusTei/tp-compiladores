@@ -4,6 +4,10 @@
 #include<string.h>
 #include<stdlib.h>
 #define ST_MAX_TAM 1024
+#define RESERVERD_WORDS_TAM 13
+#define RESERVERD_WORDS_MAX_LENGTH 28
+#define MULTIPLE_DEFINITION_ERROR 500
+#define RESERVERD_WORD_ERROR 501
 
 typedef enum MetaType {
 	UNKNOWN = -1,
@@ -32,7 +36,9 @@ typedef struct SymbolTable {
 } SymbolTable;
 
 void initializeSymbolTable(SymbolTable *st);
-void addToSymbolTable(SymbolTable *table, MetaType c, int lineNum, char *dataType, char *yytext);
+int addToSymbolTable(SymbolTable *table, MetaType c, int lineNum, char *dataType, char *yytext);
 void printSymbolTable(SymbolTable st);
+char *getDataType(SymbolTable st, char *lexem);
+int verifyAlreadyIsInTable(SymbolTable *table, char *id);
 
 #endif

@@ -1,6 +1,7 @@
 %{
     #include "./src/lib.h"
     #include "y.tab.h"
+    void handleAddToSymbolTable(MetaType c, int lineNum, char *dataType, char *yytext);
     void defineDataType();
     char dataType[18];
 %}
@@ -9,6 +10,7 @@
   struct lexval {
    char name[100];
    TipoApontador node;
+   char type[10];
   } lexval;
 }
 
@@ -25,7 +27,7 @@ begin: main '(' ')' '{' body return '}' {
 }
 ;
 
-main: datatype ID { addToSymbolTable(&st, FUNCT, yylineno, dataType, yytext); }
+main: datatype ID { handleAddToSymbolTable(FUNCT, yylineno, dataType, yytext); }
 ;
 
 datatype: INT { defineDataType(); }
@@ -34,12 +36,12 @@ datatype: INT { defineDataType(); }
 | VOID { defineDataType(); }
 ;
 
-body: FOR { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '(' statement ';' condition ';' statement ')' '{' body '}' {
+body: FOR { handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext); } '(' statement ';' condition ';' statement ')' '{' body '}' {
   TipoApontador temp = Insere("condition", $6.node, $8.node);
   TipoApontador temp2 = Insere("condition", $4.node, temp);
   $$.node = Insere($1.name, temp2, $11.node);
 }
-| IF { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '(' condition ')' '{' body '}' else {
+| IF {handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext);} '(' condition ')' '{' body '}' else {
   TipoApontador nodeIf = Insere($1.name, $4.node, $7.node);
   $$.node = Insere("if-else", nodeIf, $9.node);
 }
@@ -49,74 +51,125 @@ body: FOR { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '(' st
 | body body {
   $$.node = Insere("statments", $1.node, $2.node);
 }
-| PRINTFF { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '(' STR ')' ';' {
+| PRINTFF {handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext);} '(' STR ')' ';' {
   $$.node = Insere("printf", NULL, NULL);
 }
-| SCANFF { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '(' STR ',' '&' ID ')' ';' {
+| SCANFF {handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext);} '(' STR ',' '&' ID ')' ';' {
   $$.node = Insere("scanf", NULL, NULL);
 }
-| WHILE { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '(' condition ')' '{' body '}' {
+| WHILE {handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext);} '(' condition ')' '{' body '}' {
   $$.node = Insere($1.name, $4.node, $7.node);
 }
 ;
 
-else: ELSE { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } '{' body '}' {
+else: ELSE {handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext); } '{' body '}' {
   $$.node = Insere($1.name, NULL, $4.node);
 }
 | { $$.node = NULL; }
 ;
 
-condition: value relop value {
-  $$.node = Insere($2.name, $1.node, $3.node);
-}
-| TRUE { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); $$.node = NULL; }
-| FALSE { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); $$.node = NULL; }
+condition: value relop value { $$.node = Insere($2.name, $1.node, $3.node); }
+| TRUE {handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext); $$.node = NULL; }
+| FALSE {handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext); $$.node = NULL; }
 | { $$.node = NULL; }
 ;
 
-statement: datatype ID { addToSymbolTable(&st, IDTYPE, yylineno, dataType, yytext); } init {
+statement: datatype ID { handleAddToSymbolTable(IDTYPE, yylineno, dataType, yytext); } init {
   $2.node = Insere($2.name, NULL, NULL);
-  $$.node = Insere("declaration", $2.node, $4.node);
+
+  if (typeCheck($1.name, $4.type) < 1) {
+    $$.node = Insere("declaration", $2.node, $4.node);
+
+  } else {
+    sprintf(semanticErros[numSemanticErros], "<Semantic error>%d: Os tipos sao incompativeis!\n Esperado %s, recebido %s\n", yylineno, $1.name, $4.type);
+    numSemanticErros += 1;
+  }
 }
 | ID '=' expression {
-  $1.node = Insere($1.name, NULL, NULL);
-  $$.node = Insere("=", $1.node, $3.node);
+    if (checkVarIsAlreadyDeclared($1.name) > 0) {
+      $1.node = Insere($1.name, NULL, NULL);
+      char *idType = getDataType(st, $1.name);
+      printf("%s %s", idType, $1.name);
+      if (typeCheck(idType, $3.type) < 1) {
+        $$.node = Insere("=", $1.node, $3.node);
+      } else {
+        sprintf(semanticErros[numSemanticErros], "<Semantic error>%d: Os tipos sao incompativeis!\n Esperado %s, recebido %s\n", yylineno, idType, $3.type);
+        numSemanticErros += 1;
+      }
+    }
 }
-| ID relop expression {
+| ID { checkVarIsAlreadyDeclared($1.name); } relop expression {
   $1.node = Insere($1.name, NULL, NULL);
-  $$.node = Insere($2.name, $1.node, $3.node);
+  $$.node = Insere($3.name, $1.node, $4.node);
 }
 ;
 
-init: '=' value { $$.node = $2.node; }
-| { $$.node = Insere("NULL", NULL, NULL); }
+init: '=' value {
+  $$.node = $2.node;
+  strcpy($$.type, $2.type);
+  strcpy($$.name, $2.name);  
+}
+| {
+  strcpy($$.type, "null");
+  strcpy($$.name, "NULL");
+  $$.node = Insere("NULL", NULL, NULL);
+}
 ;
 
-expression: expression arithmetic expression { $$.node = Insere($2.name, $1.node, $3.node); }
-| value { $$.node = $1.node; }
+expression: expression arithmetic expression {
+  if (typeCheck($1.type, $3.type) < 1) {
+    $$.node = Insere($2.name, $1.node, $3.node);
+  } else {
+    sprintf(semanticErros[numSemanticErros], "<Semantic error> %d: Os tipos sao incompativeis!\n Esperado %s, recebido %s\n", yylineno, $1.type, $3.type);
+    numSemanticErros += 1;
+  }
+}
+| value {
+  strcpy($$.name, $1.name);
+  strcpy($$.type, $1.type);
+  $$.node = $1.node;
+}
 ;
 
-arithmetic: ADD { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
-| SUBTRACT { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
-| MULTIPLY { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
-| DIVIDE { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
+arithmetic: ADD { handleAddToSymbolTable(OPERATOR, yylineno, dataType, yytext); }
+| SUBTRACT { handleAddToSymbolTable(OPERATOR, yylineno, dataType, yytext); }
+| MULTIPLY { handleAddToSymbolTable(OPERATOR, yylineno, dataType, yytext); }
+| DIVIDE { handleAddToSymbolTable(OPERATOR, yylineno, dataType, yytext); }
 ;
 
-relop: LT { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
-| GT { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
-| LE { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
-| GE { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
-| EQ { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
-| NE { addToSymbolTable(&st, OPERATOR, yylineno, dataType, yytext); }
+relop: LT { handleAddToSymbolTable(OPERATOR, yylineno, dataType, yytext); }
+| GT { handleAddToSymbolTable(OPERATOR, yylineno, dataType, yytext); }
+| LE { handleAddToSymbolTable(OPERATOR, yylineno, dataType, yytext); }
+| GE { handleAddToSymbolTable(OPERATOR, yylineno, dataType, yytext); }
+| EQ { handleAddToSymbolTable(OPERATOR, yylineno, dataType, yytext); }
+| NE { handleAddToSymbolTable(OPERATOR, yylineno, dataType, yytext); }
 ;
 
-value: NUMBER { addToSymbolTable(&st, CONSTANT, yylineno, dataType, yytext); }
-| FLOAT_NUM { addToSymbolTable(&st, CONSTANT, yylineno, dataType, yytext); }
-| CHARACTER { addToSymbolTable(&st, CONSTANT, yylineno, dataType, yytext); }
-| ID { $$.node = Insere($1.name, NULL, NULL); }
+value: NUMBER {
+  strcpy($$.name, $1.name);
+  strcpy($$.type, "pinpteipro");
+  handleAddToSymbolTable(CONSTANT, yylineno, dataType, yytext);
+}
+| FLOAT_NUM {
+  strcpy($$.name, $1.name);
+  strcpy($$.type, "prepal");
+  handleAddToSymbolTable(CONSTANT, yylineno, dataType, yytext);
+}
+| CHARACTER {
+  strcpy($$.name, $1.name);
+  strcpy($$.type, "pcaprapcptepre");
+  handleAddToSymbolTable(CONSTANT, yylineno, dataType, yytext); 
+}
+| ID {
+  strcpy($$.name, $1.name);
+  strcpy($$.type, getDataType(st, $1.name));
+  checkVarIsAlreadyDeclared($1.name);
+  $$.node = Insere($1.name, NULL, NULL);
+}
 ;
 
-return: RETURN { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } value ';' {
+return: RETURN { handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext); } value ';' {
+  returnTypeCheck($3.name);
   $1.node = Insere("return", NULL, NULL);
   $$.node = Insere("RETURN", $1.node, $3.node);
 }
@@ -124,6 +177,18 @@ return: RETURN { addToSymbolTable(&st, KEYWORD, yylineno, dataType, yytext); } v
 ;
 
 %%
+
+void handleAddToSymbolTable(MetaType c, int lineNum, char *dataType, char *yytext) {
+  int ret = addToSymbolTable(&st, c, lineNum, dataType, yytext);
+
+  if (ret == MULTIPLE_DEFINITION_ERROR) {
+    sprintf(semanticErros[numSemanticErros], "<Semantic error> %d: Multiplas declaracoes da variavel \"%s\"\n", lineNum, yytext);
+    numSemanticErros += 1;
+  } else if (ret == RESERVERD_WORD_ERROR) {
+    sprintf(semanticErros[numSemanticErros], "<Semantic error> %d: Variavel \"%s\" eh uma palavra reservada\n", lineNum, yytext);
+    numSemanticErros += 1;
+  }
+}
 
 void defineDataType() {
 	strcpy(dataType, yytext);

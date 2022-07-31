@@ -25,7 +25,31 @@ void enterTableData(SymbolTable *table, int index, MetaType c, int lineNum, char
 	table->table[index].data_type = strdup(dataType);
 }
 
-void addToSymbolTable(SymbolTable *table, MetaType c, int lineNum, char *dataType, char *yytext) {
+int addToSymbolTable(SymbolTable *table, MetaType c, int lineNum, char *dataType, char *yytext) {
+	char ReserverdWords[RESERVERD_WORDS_TAM][RESERVERD_WORDS_MAX_LENGTH] = {
+	"pespcrepva",
+	"plepia",
+	"pinpteipro",
+	"prepal",
+	"pcaprapcptepre",
+	"pvapzipo",
+	"preptoprpne",
+	"preppipta",
+	"pse",
+	"psepnao",
+	"pverpdapdeipro",
+	"pfalpso",
+	"penpquanpto"
+	};
+
+	if (c == IDTYPE) {
+		for(int i = 0; i < RESERVERD_WORDS_TAM; i++) {
+			if(strcmp(ReserverdWords[i], yytext) == 1) {
+				return RESERVERD_WORD_ERROR;
+			}
+		}
+	}
+
   if(!verifyAlreadyIsInTable(table, yytext)) {
     int index = table->last;
 		switch (c)
@@ -52,6 +76,9 @@ void addToSymbolTable(SymbolTable *table, MetaType c, int lineNum, char *dataTyp
 
 		index++;
 		table->last = index;
+		return 0;
+	} else if (c == IDTYPE) {
+		return MULTIPLE_DEFINITION_ERROR;
 	}
 }
 
@@ -87,3 +114,10 @@ void printSymbolTable(SymbolTable st) {
 	}
 }
 
+char *getDataType(SymbolTable st, char *lexem) {
+	for (int i = 0; i < st.last; i++) {
+		if (strcmp(st.table[i].token.lexem, lexem) == 0) {
+			return st.table[i].data_type;
+		}
+	}
+}
