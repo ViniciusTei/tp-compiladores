@@ -11,6 +11,8 @@
    char name[100];
    TipoApontador node;
    char type[10];
+   char gotoLabel[10];
+   char nextGotoLabel[10];
   } lexval;
 }
 
@@ -36,14 +38,17 @@ datatype: INT { defineDataType(); }
 | VOID { defineDataType(); }
 ;
 
-body: FOR { handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext); } '(' statement ';' condition ';' statement ')' '{' body '}' {
+body: FOR { handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext); actualConditional = forStatment; } '(' statement ';' condition ';' statement ')' '{' body '}' {
   TipoApontador temp = Insere("condition", $6.node, $8.node);
   TipoApontador temp2 = Insere("condition", $4.node, temp);
   $$.node = Insere($1.name, temp2, $11.node);
+  sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "JUMP to %s\n", $6.gotoLabel);
+  sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "LABEL %s:\n", $6.nextGotoLabel);
 }
-| IF {handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext);} '(' condition ')' '{' body '}' else {
-  TipoApontador nodeIf = Insere($1.name, $4.node, $7.node);
-  $$.node = Insere("if-else", nodeIf, $9.node);
+| IF {handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext); actualConditional = ifElse;} '(' condition ')' { sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "LABEL %s:\n", $4.gotoLabel); } '{' body '}'{ sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "LABEL %s:\n", $4.nextGotoLabel); } else {
+  TipoApontador nodeIf = Insere($1.name, $4.node, $8.node);
+  $$.node = Insere("if-else", nodeIf, $11.node);
+  sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "GOTO next\n");
 }
 | statement ';' {
   $$.node = $1.node;
@@ -57,7 +62,7 @@ body: FOR { handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext); } '(' s
 | SCANFF {handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext);} '(' STR ',' '&' ID ')' ';' {
   $$.node = Insere("scanf", NULL, NULL);
 }
-| WHILE {handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext);} '(' condition ')' '{' body '}' {
+| WHILE {handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext); actualConditional = whileStatment;} '(' condition ')' '{' body '}' {
   $$.node = Insere($1.name, $4.node, $7.node);
 }
 ;
@@ -68,7 +73,22 @@ else: ELSE {handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext); } '{' b
 | { $$.node = NULL; }
 ;
 
-condition: value relop value { $$.node = Insere($2.name, $1.node, $3.node); }
+condition: value relop value { 
+  $$.node = Insere($2.name, $1.node, $3.node);
+  switch(actualConditional) {
+    case forStatment:
+      sprintf($$.gotoLabel, "L%d", regEnd++);
+      sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "LABEL %s:\n", $$.gotoLabel);
+      sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "if NOT (%s %s %s) GOTO L%d\n", $1.name, $2.name, $3.name, regEnd);
+      sprintf($$.nextGotoLabel, "L%d", regEnd++);
+      break;
+    case ifElse:
+      sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "if (%s %s %s) GOTO L%d else GOTO L%d\n", $1.name, $2.name, $3.name, regEnd, regEnd++);
+      sprintf($$.gotoLabel, "L%d", regEnd++);
+      sprintf($$.nextGotoLabel, "L%d", regEnd++);
+      break;
+	}  
+}
 | TRUE {handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext); $$.node = NULL; }
 | FALSE {handleAddToSymbolTable(KEYWORD, yylineno, dataType, yytext); $$.node = NULL; }
 | { $$.node = NULL; }
@@ -81,9 +101,10 @@ statement: datatype ID { handleAddToSymbolTable(IDTYPE, yylineno, dataType, yyte
     $$.node = Insere("declaration", $2.node, $4.node);
 
   } else {
-    sprintf(semanticErros[numSemanticErros], "<Semantic error>%d: Os tipos sao incompativeis!\n Esperado %s, recebido %s\n", yylineno, $1.name, $4.type);
+    sprintf(semanticErros[numSemanticErros], "<Semantic error> %d: Os tipos sao incompativeis!\n Esperado %s, recebido %s\n", yylineno, $1.name, $4.type);
     numSemanticErros += 1;
   }
+  sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "%s = %s\n", $2.name, $4.name);
 }
 | ID '=' expression {
     if (checkVarIsAlreadyDeclared($1.name) > 0) {
@@ -93,10 +114,11 @@ statement: datatype ID { handleAddToSymbolTable(IDTYPE, yylineno, dataType, yyte
       if (typeCheck(idType, $3.type) < 1) {
         $$.node = Insere("=", $1.node, $3.node);
       } else {
-        sprintf(semanticErros[numSemanticErros], "<Semantic error>%d: Os tipos sao incompativeis!\n Esperado %s, recebido %s\n", yylineno, idType, $3.type);
+        sprintf(semanticErros[numSemanticErros], "<Semantic error> %d: Os tipos sao incompativeis!\n Esperado %s, recebido %s\n", yylineno, idType, $3.type);
         numSemanticErros += 1;
       }
     }
+    sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "%s = %s\n", $1.name, $3.name);
 }
 | ID { checkVarIsAlreadyDeclared($1.name); } relop expression {
   $1.node = Insere($1.name, NULL, NULL);
@@ -123,6 +145,10 @@ expression: expression arithmetic expression {
     sprintf(semanticErros[numSemanticErros], "<Semantic error> %d: Os tipos sao incompativeis!\n Esperado %s, recebido %s\n", yylineno, $1.type, $3.type);
     numSemanticErros += 1;
   }
+
+  sprintf($$.name, "t%d", tempReg);
+	tempReg++;
+  sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "%s = %s %s %s\n",  $$.name, $1.name, $2.name, $3.name);
 }
 | value {
   strcpy($$.name, $1.name);

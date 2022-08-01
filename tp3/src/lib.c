@@ -3,6 +3,9 @@
 int begin(void) {
   hasError = 0;
   numSemanticErros = 0;
+  tempReg = 0;
+  regEnd = 0;
+  intermadiateCode.last = 0;
   initializeSymbolTable(&st);
   printf("Arquivo de entrada\n");
   yyparse();
@@ -23,6 +26,8 @@ int begin(void) {
   hasError
     ? printf("\nPrograma incorreto! Encerrando compilador!\n")
     : printf("\nPrograma correto! Encerrando compilador!\n");
+
+  createFileOutput();
 
   return 0;
 }

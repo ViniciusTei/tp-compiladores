@@ -3,6 +3,7 @@
 
 #include "tabela.h"
 #include "btree.h"
+#include "codigo.h"
 
 #define MAX_SEMANTIC_ERROS 256
 #define MAX_ERROR_LENGTH 60

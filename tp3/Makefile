@@ -13,5 +13,5 @@ YACC = yacc
 lex:
 	$(LEX) ./src/lex.l
 	$(YACC) -v -d ./src/yacc.y
-	$(CC) lex.yy.c y.tab.c ./src/tabela.c ./src/lib.c ./src/btree.c
-	./$(TARGET) < ./src/test/entrada5.p
+	$(CC) lex.yy.c y.tab.c ./src/tabela.c ./src/lib.c ./src/btree.c ./src/codigo.c
+	./$(TARGET) < ./src/test/test.p

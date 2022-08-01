@@ -27,19 +27,19 @@ void enterTableData(SymbolTable *table, int index, MetaType c, int lineNum, char
 
 int addToSymbolTable(SymbolTable *table, MetaType c, int lineNum, char *dataType, char *yytext) {
 	char ReserverdWords[RESERVERD_WORDS_TAM][RESERVERD_WORDS_MAX_LENGTH] = {
-	"pespcrepva",
-	"plepia",
-	"pinpteipro",
-	"prepal",
-	"pcaprapcptepre",
-	"pvapzipo",
-	"preptoprpne",
-	"preppipta",
-	"pse",
-	"psepnao",
-	"pverpdapdeipro",
-	"pfalpso",
-	"penpquanpto"
+		"pespcrepva",
+		"plepia",
+		"pinpteipro",
+		"prepal",
+		"pcaprapcptepre",
+		"pvapzipo",
+		"preptoprpne",
+		"preppipta",
+		"pse",
+		"psepnao",
+		"pverpdapdeipro",
+		"pfalpso",
+		"penpquanpto"
 	};
 
 	if (c == IDTYPE) {
