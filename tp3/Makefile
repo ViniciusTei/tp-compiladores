@@ -14,4 +14,10 @@ lex:
 	$(LEX) ./src/lex.l
 	$(YACC) -v -d ./src/yacc.y
 	$(CC) lex.yy.c y.tab.c ./src/tabela.c ./src/lib.c ./src/btree.c ./src/codigo.c
+	
+test:
 	./$(TARGET) < ./src/test/entrada1.p
+	./$(TARGET) < ./src/test/entrada2.p
+	./$(TARGET) < ./src/test/entrada3.p
+	./$(TARGET) < ./src/test/entrada4.p
+	./$(TARGET) < ./src/test/entrada5.p

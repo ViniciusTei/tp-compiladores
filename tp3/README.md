@@ -15,4 +15,15 @@ Para implementar o codigo intermediario vamos usar a implementacao de tres ender
 
  - [x] arvore sintaxe (b-tree)
  - [x] analise semantica
- - [ ] geracao de codigo intermediario
+ - [x] geracao de codigo intermediario
+
+ ## Como usar o compilador
+
+Primeiro basta compilar o arquivo usando o comando `make` no seu terminal, isso ira criar um arquivo `a.out`.
+
+Voce pode rodar o comando `make test` para rodar o teste padrao do projeto, ou adicionar um arquivo novo e rodar no terminal o 
+arquivo executavel gerando passando na entrada o seu arquivo no seguinte formato:
+
+```bash
+./a.out < novo_arq.p
+```
