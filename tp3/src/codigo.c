@@ -7,6 +7,8 @@ void createFileOutput() {
 
   if (arq == NULL) exit(1);
 
+  printf("\n\nCodigo de tres enderecos gerado: \n");
+
   for (int i = 0; i < intermadiateCode.last; i++) {
     printf("%s",intermadiateCode.three_address_table[i]);
     fprintf(arq, "%s", intermadiateCode.three_address_table[i]);

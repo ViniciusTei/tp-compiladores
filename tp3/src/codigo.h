@@ -6,7 +6,7 @@
 #include<stdlib.h>
 
 #define MAX_CODE_TAM 900
-#define MAX_CODE_STR_LEGNTH 12
+#define MAX_CODE_STR_LEGNTH 100
 
 typedef struct Quadruple {
   char op[MAX_CODE_STR_LEGNTH];
@@ -22,7 +22,7 @@ enum Conditionals {
 } Conditionals;
 
 int tempReg; //inteiro que vai ajudar a definir as variaveis temporarias
-int regEnd; //endereco das intrucoes
+int regEnd;
 int actualConditional;
 
 typedef struct ThreeAdd {

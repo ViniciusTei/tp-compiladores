@@ -79,11 +79,11 @@ condition: value relop value {
     case forStatment:
       sprintf($$.gotoLabel, "L%d", regEnd++);
       sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "LABEL %s:\n", $$.gotoLabel);
-      sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "if NOT (%s %s %s) GOTO L%d\n", $1.name, $2.name, $3.name, regEnd);
+      sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "ifFalse %s %s %s GOTO L%d\n", $1.name, $2.name, $3.name, regEnd);
       sprintf($$.nextGotoLabel, "L%d", regEnd++);
       break;
     case ifElse:
-      sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "if (%s %s %s) GOTO L%d else GOTO L%d\n", $1.name, $2.name, $3.name, regEnd, regEnd++);
+      sprintf(intermadiateCode.three_address_table[intermadiateCode.last++], "if %s %s %s GOTO L%d else GOTO L%d\n", $1.name, $2.name, $3.name, regEnd, regEnd+1);
       sprintf($$.gotoLabel, "L%d", regEnd++);
       sprintf($$.nextGotoLabel, "L%d", regEnd++);
       break;
