@@ -1,6 +1,10 @@
 # Linguagem P
 
-Aqui você encontra uma breve documentação para a linguagem P. Nela você poderá entender como escrever um programa em P. 💥💥
+Aqui você encontra uma breve documentação para a linguagem P. Nela você poderá entender como escrever um programa em P. 
+
+<p align="center">
+  <img src="./assets/p.png" width="250" title="Linguagem P" alt="P logo">
+</p>
 
 ## Conteúdo
 
