@@ -1,0 +1,26 @@
+x = 1
+f = NULL
+a = 3
+t0 = 3 + 5
+t1 = x * t0
+a = t1
+if x > a GOTO L0 else GOTO L1
+LABEL L0:
+t2 = 3 + 100
+t3 = x * t2
+a = t3
+if x > a GOTO L2 else GOTO L3
+LABEL L2:
+t4 = 3 + 100
+t5 = x * t4
+a = t5
+LABEL L3:
+t6 = 3 + 100
+t7 = a * t6
+x = t7
+GOTO next
+LABEL L1:
+t8 = 3 + 100
+t9 = a * t8
+x = t9
+GOTO next

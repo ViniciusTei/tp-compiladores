@@ -7,8 +7,8 @@ Aqui você encontra uma breve documentação para a linguagem P. Nela você pode
 1. [Hello World](hello-world.md)
 2. [Tipos de dados](tipos-dados.md)
 3. [Operadores aritméticos](operadores-aritmeticos.md)
-4. Operadores lógicos e relacionais
-5. Estruturas condicionais e de repetição
+4. [Estruturas condicionais e de repetição](estruturas-condicionais.md)
+5. [Operadores lógicos e relacionais](operadores-logicos.md)
 6. [Sobre o compilador](sobre.md)
 
 ## Sobre o compilador

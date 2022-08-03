@@ -12,10 +12,10 @@ int begin(void) {
 
   printSymbolTable(st);
 
-  // printf("Analise sintatica\n\n");
-  // printBTree(head);
+  printf("\nArvore sintatica\n\n");
+  printBTree(head);
 
-  printf("\n");
+  printf("\n\n");
 
   if (numSemanticErros > 0)
     for (int i = 0; i < numSemanticErros; i++) 

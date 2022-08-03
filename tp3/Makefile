@@ -17,7 +17,3 @@ lex:
 	
 test:
 	./$(TARGET) < ./src/test/entrada1.p
-	./$(TARGET) < ./src/test/entrada2.p
-	./$(TARGET) < ./src/test/entrada3.p
-	./$(TARGET) < ./src/test/entrada4.p
-	./$(TARGET) < ./src/test/entrada5.p
