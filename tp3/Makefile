@@ -17,3 +17,9 @@ lex:
 	
 test:
 	./$(TARGET) < ./src/test/entrada1.p
+
+test2:
+	./$(TARGET) < ./src/test/entrada2.p
+
+test3:
+	./$(TARGET) < ./src/test/entrada3.p
